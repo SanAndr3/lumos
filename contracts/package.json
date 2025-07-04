@@ -1,0 +1,22 @@
+{
+  "name": "lumos-contracts",
+  "version": "2.0.0",
+  "description": "A collection of smart contracts used in the development of the Lumos blockchain.",
+  "devDependencies": {
+    "@openzeppelin/contracts": "^4.9.6",
+    "hardhat": "^2.22.2"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lumoschain/lumos.git"
+  },
+  "author": "Lumos Core Team",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/lumoschain/lumos/issues"
+  },
+  "homepage": "https://github.com/lumoschain/lumos#readme"
+}

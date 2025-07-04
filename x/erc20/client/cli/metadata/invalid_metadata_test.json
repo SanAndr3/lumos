@@ -1,0 +1,21 @@
+{
+  "metadata": [
+    {
+      "description": 1,
+      "denom_units": [
+        {
+          "denom": "alumos",
+          "exponent": 0
+        },
+        {
+          "denom": "lumos",
+          "exponent": 18
+        }
+      ],
+      "base": "alumos",
+      "display": "alumos",
+      "name": "alumos",
+      "symbol": "LUMOS"
+    }
+  ]
+}

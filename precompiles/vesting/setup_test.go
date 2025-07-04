@@ -1,0 +1,59 @@
+// Copyright LCT . (LumosChainTeam)
+package vesting_test
+
+import (
+	"testing"
+
+	"github.com/lumoschain/lumos/v20/precompiles/vesting"
+	"github.com/lumoschain/lumos/v20/testutil/integration/lumos/factory"
+	"github.com/lumoschain/lumos/v20/testutil/integration/lumos/grpc"
+	testkeyring "github.com/lumoschain/lumos/v20/testutil/integration/lumos/keyring"
+	"github.com/lumoschain/lumos/v20/testutil/integration/lumos/network"
+	"github.com/stretchr/testify/suite"
+)
+
+type PrecompileTestSuite struct {
+	suite.Suite
+
+	network     *network.UnitTestNetwork
+	factory     factory.TxFactory
+	grpcHandler grpc.Handler
+	keyring     testkeyring.Keyring
+
+	bondDenom string
+
+	precompile *vesting.Precompile
+}
+
+func TestPrecompileUnitTestSuite(t *testing.T) {
+	suite.Run(t, new(PrecompileTestSuite))
+}
+
+func (s *PrecompileTestSuite) SetupTest(nKeys int) {
+	keyring := testkeyring.New(nKeys)
+	nw := network.NewUnitTestNetwork(
+		network.WithPreFundedAccounts(keyring.GetAllAccAddrs()...),
+	)
+	grpcHandler := grpc.NewIntegrationHandler(nw)
+	txFactory := factory.New(nw, grpcHandler)
+
+	stakingParams, err := grpcHandler.GetStakingParams()
+	bondDenom := stakingParams.Params.BondDenom
+
+	if err != nil {
+		panic(err)
+	}
+
+	s.bondDenom = bondDenom
+	s.factory = txFactory
+	s.grpcHandler = grpcHandler
+	s.keyring = keyring
+	s.network = nw
+
+	if s.precompile, err = vesting.NewPrecompile(
+		s.network.App.VestingKeeper,
+		s.network.App.AuthzKeeper,
+	); err != nil {
+		panic(err)
+	}
+}
